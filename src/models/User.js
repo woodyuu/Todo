@@ -38,12 +38,12 @@ const User = mongoose.model('User', userSchema) //User => users 로 몽고DB에�
 module.exports = User
 
 // user 데이터 생성 테스트
-const user = new User({
-    name: '우디',
-    email: 'woody@gmail.com',
-    userId: 'woody',
-    password: '1234567890',
-    isAdmin: true,
-});
-user.save()
-.then(() => console.log('user created !'))
+// const user = new User({
+//     name: '우디',
+//     email: 'woody@gmail.com',
+//     userId: 'woody',
+//     password: '1234567890',
+//     isAdmin: true,
+// });
+// user.save()
+// .then(() => console.log('user created !'))
