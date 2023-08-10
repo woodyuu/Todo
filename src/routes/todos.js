@@ -105,6 +105,7 @@ router.delete('/:id', isAuth, expressAsyncHandler(async(req, res, next) => {  //
     }
 }))
 
+//그룹핑
 router.get('/group/:field', isAuth, expressAsyncHandler(async(req, res, next) =>{ //어드민 페이지
     if(!req.user.isAdmin){
         res.status(401).json({code: 401, message: 'You are not authorized to use this service !'})
@@ -142,6 +143,7 @@ router.get('/group/mine/:field', isAuth, expressAsyncHandler(async (req, res, ne
     res.json({code: 200, docs})
 }))
 
+// 날짜에 따른 그룹핑
 router.get('/group/date/:field', isAuth, expressAsyncHandler(async (req, res, next) => { // 어드민 페이지
     if(!req.user.isAdmin){
         res.status(401).json({ code: 401, message: '권한 없음'})
@@ -168,6 +170,7 @@ router.get('/group/date/:field', isAuth, expressAsyncHandler(async (req, res, ne
     }
 }))
 
+//사용자의 날짜 그룹핑
 router.get('/group/mine/date/:field', isAuth, expressAsyncHandler(async (req, res, next) => { // 어드민 페이지
     if(req.params.field === 'createdAt' 
     || req.params.field === 'lastModifiedAt' 
