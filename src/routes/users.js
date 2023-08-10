@@ -76,7 +76,7 @@ router.put('/:id', isAuth, expressAsyncHandler(async(req, res, next) => { // /ap
 
 //회원삭제
 router.delete('/:id', isAuth, expressAsyncHandler(async(req, res, next) => { // /api/users/{id}
-    const user =await User.findByIdAndDelete(req.params.id)
+    const user = await User.findByIdAndDelete(req.params.id)
     if(!User){
         res.status(404).json({code: 404, message: 'User Not Founded'})
     }else{
