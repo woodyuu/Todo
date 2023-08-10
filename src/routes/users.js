@@ -5,6 +5,7 @@ const { generateToken, isAuth } = require('../../auth')
 
 const router = express.Router() //하위 url 로직을 처리하는 라우터 모듈
 
+//회원가입
 router.post('/register', expressAsyncHandler(async(req, res, next) => { // /api/users/register
     console.log(req.body)
     const user = new User({
@@ -26,6 +27,7 @@ router.post('/register', expressAsyncHandler(async(req, res, next) => { // /api/
     }
 }))
 
+//로그인
 router.post('/login', expressAsyncHandler(async(req, res, next) => { // /api/users/login
     console.log(req.body)
     const loginUser = await User.findOne({
@@ -44,10 +46,12 @@ router.post('/login', expressAsyncHandler(async(req, res, next) => { // /api/use
     }
 }))
 
+//로그아웃
 router.post('/logout', (req, res, next) => { // /api/users/logout
     res.json("로그아웃")
 })
 
+//회원변경
 //isAuth; 사용자를 수정할 권한이 있는지 검사하는 미들웨어
 router.put('/:id', isAuth, expressAsyncHandler(async(req, res, next) => { // /api/users/{id}
     const user = await User.findById(req.params.id)
@@ -70,6 +74,7 @@ router.put('/:id', isAuth, expressAsyncHandler(async(req, res, next) => { // /ap
     }
 }))
 
+//회원삭제
 router.delete('/:id', isAuth, expressAsyncHandler(async(req, res, next) => { // /api/users/{id}
     const user =await User.findByIdAndDelete(req.params.id)
     if(!User){

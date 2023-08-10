@@ -8,6 +8,7 @@ const { Types: { ObjectId } } = mongoose
 
 const router = express.Router()
 
+//todo 전체목록 조회(해당 사용자 기준)
 router.get('/', isAuth, expressAsyncHandler(async(req, res, next) => { // /api/todos/
     // 해당 사용자의 할일목록, req.user는 isAuth에서 전달된 값
     const todos = await Todo.find({ author: req.user._id }).populate('author') 
@@ -18,6 +19,7 @@ router.get('/', isAuth, expressAsyncHandler(async(req, res, next) => { // /api/t
     }
 }))
 
+//특정 todo 조회(해당 사용자기준)
 router.get('/:id', isAuth, expressAsyncHandler(async (req, res, next) => { // /api/todos/{id}
     const todo = await Todo.findOne({
         author: req.user._id,
@@ -30,6 +32,7 @@ router.get('/:id', isAuth, expressAsyncHandler(async (req, res, next) => { // /a
     }
 }))
 
+//todo 생성 (해당 사용자 기준)
 router.post('/', isAuth, expressAsyncHandler(async(req, res, next) => { // /api/todos/
     // 중복체크(현재 사용자가 생성하려는 TODO의 타이틀이 이미 DB에 있는지 검사)
     const searchedTodo = await Todo.findOne({
@@ -59,6 +62,7 @@ router.post('/', isAuth, expressAsyncHandler(async(req, res, next) => { // /api/
     }
 }))
 
+//특정 todo 변경 (해당사용자 기준)
 router.put('/:id', isAuth, expressAsyncHandler(async (req, res, next) => {// /api/todos/{id}
     const todo = await Todo.findOne({ 
       author: req.user._id,  // req.user 는 isAuth 에서 전달된 값
@@ -84,6 +88,7 @@ router.put('/:id', isAuth, expressAsyncHandler(async (req, res, next) => {// /ap
     }
 }))
 
+//특정 todo 삭제(해당 사용자 기준)
 router.delete('/:id', isAuth, expressAsyncHandler(async(req, res, next) => {  // /api/todos/{id}
     const todo = await Todo.findOne({
         author: req.user._id,
@@ -150,7 +155,8 @@ router.get('/group/date/:field', isAuth, expressAsyncHandler(async (req, res, ne
                         _id: { year: { $year: `$${req.params.field}` }, month: { $month: `$${req.params.field}` } },
                         count: { $sum: 1 }
                     }
-                }
+                },
+                { $sort : { _id : 1 } } // 날짜 오름차순 정렬
             ])
         
             console.log(`Number Of Group: ${docs.length}`) // 그룹 갯수
@@ -175,7 +181,8 @@ router.get('/group/mine/date/:field', isAuth, expressAsyncHandler(async (req, re
                 _id: { year: { $year: `$${req.params.field}` }, month: { $month: `$${req.params.field}` } },
                 count: { $sum: 1 }
                 }
-            }
+            },
+            { $sort : { _id : 1 } } // 날짜 오름차순 정렬
         ])
     
         console.log(`Number Of Group: ${docs.length}`) // 그룹 갯수
