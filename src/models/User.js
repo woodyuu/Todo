@@ -45,5 +45,7 @@ module.exports = User
 //     password: '1234567890',
 //     isAdmin: true,
 // });
+
+
 // user.save()
 // .then(() => console.log('user created !'))

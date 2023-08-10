@@ -1,0 +1,58 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>분석그래프</title>
+</head>
+<body>
+    <div>
+        <canvas id="myChart"></canvas>
+    </div>
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <script>
+        const token = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJfaWQiOiI2NGQ0NTdlMmFiODJhYjBjZmRlMGJiZTUiLCJuYW1lIjoi7J6E7Jyk7JWEIiwiZW1haWwiOiJ5dW5hQGdtYWlsLmNvbSIsInVzZXJJZCI6Inl1bmEiLCJpc0FkbWluIjp0cnVlLCJjcmVhdGVkQXQiOiIyMDIzLTA4LTEwVDAzOjIyOjEwLjYxOVoiLCJpYXQiOjE2OTE2Mzc4MDUsImV4cCI6MTY5MTcyNDIwNSwiaXNzIjoid29vZHkifQ.gMXGf3S3oCHUJq84fiPyhKgniLOp3ZIhOfOu63anJjA'
+
+        const ctx = document.getElementById('myChart')
+
+        fetch('http://127.0.0.1:5000/api/todos/group/category', {
+            headers: {
+                'Content-Type': 'application/json',
+                'Authorization': `Bearer ${token}`
+            }
+        })
+        .then(res => res.json())
+        .then(data => {
+            const group = data.docs
+            console.log(group)
+
+        // 차트 그리기
+        new Chart(ctx, {
+        type: 'bar',
+        data:{
+            labels: group.filter(item => item._id).map(item => item._id),
+            datasets: [{
+                label: '# of Todos',
+                data: group.map(item => item.count),
+                borderWidth: 1,
+                backgroundColor: '#ABC123',
+            }]
+        },
+        options: {
+            scales: {
+                y: {
+                    beginAtZero: true
+                }
+            },
+            plugins: {
+                colors: {
+                enabled: true
+                }
+            }
+            }
+        })
+    })
+    </script>
+</body>
+</html>
